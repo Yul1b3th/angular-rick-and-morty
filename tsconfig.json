@@ -3,6 +3,13 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "@app/*":["src/app/*"],
+      "@shared/*":["src/app/shared/*"],
+      "@environment/*":["src/environments/*"],
+      "@characters/*":["src/app/components/page/characters/*"],
+      "@pages/*":["src/app/components/page/*"],
+    },
     "outDir": "./dist/out-tsc",
     "strict": true,
     "noImplicitOverride": true,
