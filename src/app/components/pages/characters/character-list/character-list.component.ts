@@ -7,6 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.scss'
 })
-export class CharacterListComponent {
+export default class CharacterListComponent {
 
 }
