@@ -3,6 +3,7 @@ import { Component, HostListener, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, ParamMap, Params, Router, RouterLink } from '@angular/router';
 
 import { filter, take } from 'rxjs/operators';
+import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
 import { Character } from '@app/shared/interfaces/character.interface';
 import { TrackHttpError } from '@app/shared/models/trackHttpError';
@@ -16,7 +17,7 @@ type RequestInfo = {
 @Component({
   selector: 'app-character-list',
   standalone: true,
-  imports: [RouterLink, CommonModule, CharactersComponent],
+  imports: [RouterLink, CommonModule, CharactersComponent, InfiniteScrollModule],
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.scss'
 })
@@ -51,27 +52,28 @@ export default class CharacterListComponent implements OnInit {
     // this.getDataFromService();
   }
 
-  // @HostListener('window:scroll', [])
-  // onWindowScroll():void {
-  //   const yOffSet = window.pageYOffset;
-  //   if ((yOffSet || this.document.documentElement.scrollTop || this.document.body.scrollTop) > this.showScrollHeight) {
-  //     this.showGoUpButton = true;
-  //   } else if (this.showGoUpButton && (yOffSet || this.document.documentElement.scrollTop || this.document.body.scrollTop) < this.hideScrollHeight) {
-  //     this.showGoUpButton = false;
-  //   }
-  // }
+  // Operador para escuchar el evento window:scroll
+  @HostListener('window:scroll', [])
+    onWindowScroll():void {
+    const yOffSet = window.pageYOffset;
+    if ((yOffSet || this.document.documentElement.scrollTop || this.document.body.scrollTop) > this.showScrollHeight) {
+      this.showGoUpButton = true;
+    } else if (this.showGoUpButton && (yOffSet || this.document.documentElement.scrollTop || this.document.body.scrollTop) < this.hideScrollHeight) {
+      this.showGoUpButton = false;
+    }
+  }
 
-  // onScrollDown():void{
-  //   if (this.info.next) {
-  //     this.pageNum++;
-  //     this.getDataFromService();
-  //   }
-  // }
+  onScrollDown():void{
+    if (this.info.next) {
+      this.pageNum++;
+      this.getDataFromService();
+    }
+  }
 
-  // onScrollTop():void{
-  //   this.document.body.scrollTop = 0; // Safari
-  //   this.document.documentElement.scrollTop = 0; // Other
-  // }
+  onScrollTop():void{
+    this.document.body.scrollTop = 0; // Safari
+    this.document.documentElement.scrollTop = 0; // Other
+  }
 
   private onUrlChanged(): void {
     this.router.events
