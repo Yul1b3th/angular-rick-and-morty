@@ -10,6 +10,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/pages/characters/character-list/character-list.component'),
   },
   {
+    path: 'character-details/:id',
+    loadComponent: () => import('./components/pages/characters/character-details/character-details.component'),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'
