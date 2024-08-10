@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
+
 import { Character } from '@app/shared/interfaces/character.interface';
 
 @Component({
@@ -8,7 +9,8 @@ import { Character } from '@app/shared/interfaces/character.interface';
   standalone: true,
   imports: [RouterLink, CommonModule],
   templateUrl: './characters.component.html',
-  styleUrl: './characters.component.scss'
+  styleUrl: './characters.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CharactersComponent {
     @Input() character!:Character;

@@ -2,6 +2,9 @@
 // `ng build --prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// https://rickandmortyapi.com/api/character/ es la URL si queremos consumir todos los personajes
+// nos devuelve un objeto json con una propiedad info, donde tienen el total de los resultados, el numero de paginas, la next y la prev
+// y una propiedad results conm los datos de los personajes
 export const environment = {
   production: false,
   baseUrlAPI: 'https://rickandmortyapi.com/api/character/',

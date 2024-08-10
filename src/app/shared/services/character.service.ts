@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { throwError, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { Character } from '@shared/interfaces/character.interface';
 import { environment } from '@environment/environment';
-import { TrackHttpError } from '@shared/models/trackHttpError';
-import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -14,26 +12,14 @@ import { catchError } from 'rxjs/operators';
 export class CharacterService {
   constructor(private http: HttpClient) {}
 
-  searchCharacters(query = '', page = 1):Observable<Character[] | TrackHttpError> {
+  // El page es para hacerle solicitudes a la API por pagina 1, 2, 3, etc
+  // El query podemos filtrar todos los persoajes o  podemos buscar un personaje en especifico
+  searchCharacters(query = '', page = 1):Observable<Character[]> {
     const filter = `${environment.baseUrlAPI}/?name=${query}&page=${page}`;
-    return this.http.get<Character[]>(filter)
-    .pipe(catchError((err) => this.handleHttpError(err)));
+    return this.http.get<Character[]>(filter);
   }
 
   getDetails(id: number) {
-    return this.http.get<Character>(`${environment.baseUrlAPI}/${id}`)
-    .pipe(catchError((err) => this.handleHttpError(err)));
-  }
-
-
-  private handleHttpError(
-    error:HttpErrorResponse
-  ):Observable<TrackHttpError>{
-
-    let dataError = new TrackHttpError();
-    dataError.errorNumber = error.status;
-    dataError.message = error.statusText;
-    dataError.friendlyMessage = 'An error occured retrienving data.';
-    return throwError(dataError);
+    return this.http.get<Character>(`${environment.baseUrlAPI}/${id}`);
   }
 }

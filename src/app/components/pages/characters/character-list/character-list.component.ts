@@ -1,13 +1,13 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, HostListener, Inject, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, ParamMap, Params, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Params, Router, RouterLink } from '@angular/router';
 
 import { filter, take } from 'rxjs/operators';
 import { InfiniteScrollModule } from "ngx-infinite-scroll";
 
-import { Character } from '@app/shared/interfaces/character.interface';
-import { TrackHttpError } from '@app/shared/models/trackHttpError';
-import { CharacterService } from '@app/shared/services/character.service';
+import { Character } from '@shared/interfaces/character.interface';
+import { TrackHttpError } from '@shared/models/trackHttpError';
+import { CharacterService } from '@shared/services/character.service';
 import { CharactersComponent } from '../characters.component';
 
 type RequestInfo = {
@@ -24,6 +24,7 @@ type RequestInfo = {
 export default class CharacterListComponent implements OnInit {
   characters: Character[] = [];
 
+  // Propiedad para almacenar la informacion de la paginacion
   info: RequestInfo = {
     next: null,
   };
@@ -31,11 +32,8 @@ export default class CharacterListComponent implements OnInit {
   showGoUpButton = false;
 
   private pageNum = 1;
-
   private query!: string;
-
   private hideScrollHeight = 200;
-
   private showScrollHeight = 500;
 
   constructor(
@@ -75,6 +73,7 @@ export default class CharacterListComponent implements OnInit {
     this.document.documentElement.scrollTop = 0; // Other
   }
 
+  // Metodo para escuchar los cambios de la URL
   private onUrlChanged(): void {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -85,10 +84,10 @@ export default class CharacterListComponent implements OnInit {
       });
   }
 
+  // Aqui recibimos los parametros de la URL, es decir lo que los usuarios escriben en el formulario de busqueda
   private getCharactersByQuery(): void {
     this.route.queryParams.pipe(take(1)).subscribe((params: Params) => {
       // console.log('Params ->', params);
-
       this.query = params['q'];
       this.getDataFromService();
     });
@@ -101,34 +100,13 @@ export default class CharacterListComponent implements OnInit {
       .subscribe((res: any) => {
         if (res?.results?.length) {
           // console.log('Response ->', res);
-          const { info, results } = res;
-          this.characters = [...this.characters, ...results];
-          this.info = info;
+          const { info, results } = res; // hacemos una destructuracion de los resultados
+          this.characters = [...this.characters, ...results]; // Concatenamos los resultados y obtenemos solo result
+          this.info = info; // Obtenemos la informacion de la paginacion
         } else {
           this.characters = [];
         }
       }, (error:TrackHttpError) => console.log((error.friendlyMessage)));
   }
-
-  // private getDataFromService(): void {
-  //   console.log('Yuli');
-
-  //   this.characterSvc
-  //     .searchCharacters(this.query, this.pageNum)
-  //     .pipe(take(1))
-  //     .subscribe((res: any) => {
-  //       if (res?.results?.length) {
-  //         console.log('Response ->', res);
-
-  //         const { info, results } = res;
-  //         this.characters = [...this.characters, ...results];
-  //         this.info = info;
-  //       }
-
-
-  //     });
-  // }
-
-
 }
 
