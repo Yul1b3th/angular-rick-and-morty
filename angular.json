@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "rickyMartin": {
+    "rickAndMartin": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -72,10 +72,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "rickyMartin:build:production"
+              "buildTarget": "rickAndMartin:build:production"
             },
             "development": {
-              "buildTarget": "rickyMartin:build:development"
+              "buildTarget": "rickAndMartin:build:development"
             }
           },
           "defaultConfiguration": "development"
